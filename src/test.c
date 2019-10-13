@@ -7,6 +7,14 @@
 #include "test.h"
 #include "args.h"
 
+#include <time.h>
+
+#define INITCLOCK t = clock();
+#define LOGCLOCK \
+    t = clock() - t; \
+    printf(" %llu ticks \n", (unsigned long long)t);
+clock_t t; 
+
 void feature_normalize2(image im)
 {
     int i;
@@ -397,9 +405,15 @@ void test_hw0()
 }
 void test_hw1()
 {
+    INITCLOCK 
     test_nn_resize();
+    LOGCLOCK
+    INITCLOCK 
     test_bl_resize();
+    LOGCLOCK
+    INITCLOCK 
     test_multiple_resize();
+    LOGCLOCK
     printf("%d tests, %d passed, %d failed\n", tests_total, tests_total-tests_fail, tests_fail);
 }
 void test_hw2()

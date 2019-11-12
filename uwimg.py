@@ -110,6 +110,10 @@ scale_image = lib.scale_image
 scale_image.argtypes = [IMAGE, c_int, c_float]
 scale_image.restype = None
 
+smooth_image = lib.smooth_image
+smooth_image.argtypes = [IMAGE, c_float]
+smooth_image.restype = IMAGE
+
 load_image_lib = lib.load_image
 load_image_lib.argtypes = [c_char_p]
 load_image_lib.restype = IMAGE

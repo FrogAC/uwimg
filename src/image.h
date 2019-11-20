@@ -8,6 +8,10 @@
 #define MIN(a,b) (((a)<(b))?(a):(b))
 #define MAX(a,b) (((a)>(b))?(a):(b))
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // DO NOT CHANGE THIS FILE
 
 typedef struct{
@@ -110,18 +114,11 @@ image optical_flow_images(image im, image prev, int smooth, int stride);
 void optical_flow_webcam(int smooth, int stride, int div);
 void draw_flow(image im, image v, float scale);
 
-#ifndef __cplusplus
-    #ifdef OPENCV
-        #include "opencv2/highgui/highgui_c.h"
-        #include "opencv2/imgproc/imgproc_c.h"
-        #include "opencv2/core/version.hpp"
-        #if CV_MAJOR_VERSION == 3
-            #include "opencv2/videoio/videoio_c.h"
-            #include "opencv2/imgcodecs/imgcodecs_c.h"
-        #endif
-        image get_image_from_stream(CvCapture *cap);
-        int show_image(image im, const char *name, int ms);
-    #endif
+#ifdef OPENCV
+void *open_video_stream(const char *f, int c, int w, int h, int fps);
+image get_image_from_stream(void *p);
+void make_window(char *name, int w, int h, int fullscreen);
+int show_image(image im, const char *name, int ms);
 #endif
 
 // Machine Learning
@@ -151,6 +148,17 @@ data load_classification_data(char *images, char *label_file, int bias);
 void free_data(data d);
 data random_batch(data d, int n);
 char *fgetl(FILE *fp);
+void activate_matrix(matrix m, ACTIVATION a);
+void gradient_matrix(matrix m, ACTIVATION a, matrix d);
+matrix forward_layer(layer *l, matrix in);
+matrix backward_layer(layer *l, matrix delta);
+void update_layer(layer *l, double rate, double momentum, double decay);
+layer make_layer(int input, int output, ACTIVATION activation);
+matrix load_matrix(const char *fname);
+void save_matrix(matrix m, const char *fname);
 
+#ifdef __cplusplus
+}
+#endif
 #endif
 
